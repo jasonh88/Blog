@@ -2,6 +2,21 @@
     a {
         cursor: pointer;
     }
+    .scrollerino {
+        height: 350px;
+        overflow-y: auto;
+    }
+
+        .scrollerino::-webkit-scrollbar {
+            width: 12px;
+            background-color: #808080;
+        }
+
+        .scrollerino::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #42DCA3;
+        }
 </style>
 <div id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" style="background-color:black" ng-controller="mainController as mc">
     <!-- Navigation -->
@@ -69,8 +84,8 @@
 
             <div class="col-md-8 container">
                 <div>
-                    <h3 class="text-center">{{mc.selectedBlog.content? '' : 'Go ahead, select a blog!'}}</h3>
-                    <h5 ng-bind-html="mc.selectedBlog.content"></h5>
+                    <h3 class="text-center">{{mc.selectedBlog.content? '' : 'Select a bloggerino!'}}</h3>
+                    <h5 ng-bind-html="mc.selectedBlog.content" class="scrollerino"></h5>
                 </div>
             </div>
             <div class="col-md-4 container">
