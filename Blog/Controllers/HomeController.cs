@@ -26,5 +26,13 @@ namespace Blog.Controllers
 
             return View();
         }
+
+
+        public ActionResult LastFm()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View("LastFm");
+        }
     }
 }

@@ -62,8 +62,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
-                        <br /><br /><br />
-                        <h1 class="brand-heading"><span ng-click="mc.createBlog()">J</span>ASON HOANG</h1>
+                        <br /><br /><br /><br /><br />
+                        <h1 class="brand-heading"><span ng-click="mc.createBlog()">J</span>ASON <hr>HOANG</h1>
                         <p class="intro-text">
                             @*A free, responsive, one page Bootstrap theme.
                                 <br>Created by Start Bootstrap.*@
@@ -153,6 +153,7 @@
 <!-- Theme JavaScript -->
 
 @section scripts {
+    <!-- FACTORY BEGIN-->
     <script>
         (function () {
             angular.module('myApp', ['ngMaterial', 'ngSanitize']).factory('mainService', MainService);
@@ -162,10 +163,11 @@
             function MainService($http) {
 
                 return {
-                    getBlogs: _getBlogs
+                    getBlogs: _getBlogs,
+                    getMusic: _getMusic
                 }
 
-
+                //GET BLOGS SECTION
                 function _getBlogs() {
                     return $http.get('/api/blogs')
                         .then(onSuccessGetBlogs)
@@ -173,19 +175,39 @@
                 }
 
                 function onSuccessGetBlogs(response) {
-                    console.log('Successfully received data from GetBlogs');
+                    //console.log('Successfully received data from GetBlogs');
                     return response.data;
                 }
+                //END GET BLOGS
+
+                //GET MUSIC SECTION
+
+                function _getMusic() {
+                    return $http.get('http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=jasonhoang88&limit=5&api_key=' + '@System.Configuration.ConfigurationManager.AppSettings["lastFm"]' +'&format=json')
+                        .then(onSuccessGetTopArtists)
+                        .catch(onError);
+                }
+
+                function onSuccessGetTopArtists(artists) {
+                    //console.log("GOT THE MUZIX");
+                    return artists.data;
+                }
+                //END MUSIC SECTION
+
 
                 function onError() {
                     console.log("Error!");
                 }
+
 
             }
 
 
         })();
     </script>
+    <!-- FACTORY END-->
+  
+    <!-- CONTROLLER BEGIN-->
     <script>
         (function () {
             angular.module('myApp')
@@ -201,6 +223,10 @@
                 //SCROLL TO SECTION OF THE RESPECTIVE BUTTON
                 vm.goTo = _goTo;
 
+
+                //MUSIC
+                vm.topArtists = null;
+
                 //Blog service and functions
                 vm.mainService = mainService;
                 vm.blogs = null;
@@ -213,17 +239,27 @@
                 render();
 
                 function render() {
-                    return vm.getBlogs()
+                         vm.getBlogs()
                         .then(onCompleteGetBlogs);
 
-                    // AUTO SCROLL CAROUSEL
-                    //$(function () {
-                    //    $('.carousel').carousel({
-                    //        interval: 1000
-                    //    });
-                    //});
+                         mainService.getMusic()
+                        .then(fillTopArtists);
 
                 }
+
+
+                //MUSIC SECTION 
+                    function _getMusic() {
+                        return mainService.getMusic()
+                            .then(fillTopArtists);
+                    }
+
+                    function fillTopArtists(data) {
+                        //console.log("ARTISTS GET");
+                        vm.topArtists = data;
+                        console.log(vm.topArtists);
+                    }
+                //END MUSIC SECTION
 
                 //BLOG SECTION
                 function _getBlogs() {
@@ -232,12 +268,13 @@
                 }
 
                 function fillBlogItems(data) {
-                    console.log("Filling Blog items");
+                    //console.log("Filling Blog items");
                     vm.blogs = data;
                 }
 
                 function onCompleteGetBlogs() {
                     console.log("Completed render and filling blog items");
+                
                 }
 
                 function _blogSelect(item) {
@@ -251,7 +288,6 @@
                     if (vm.blogCounter == 3) {
                         location.href = "/blogs";
                     } else { }
-
 
                     //switch (vm.blogCounter) {
                     //    case 1:
@@ -268,12 +304,7 @@
                         scrollTop: $('#' + section).offset().top
                     }, 1000);
                 };
-
-
             }
-
-
-
         })();
     </script>
 }
