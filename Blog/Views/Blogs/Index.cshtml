@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    h5 {
+        margin: 0px;
+    }
+</style>
+
+
+<div ng-controller="blogController as bc">
+    <div class="col-md-4"></div>
+
+    <div class="col-md-4">
+        <div><h3>Add a Blog</h3></div>
+        <form id="form" name="form">
+
+            <div class="form-group">
+                <h5><label>Blog Title</label></h5>
+                <input type="text" name="title" class="form-control" ng-model="bc.item.title" maxlength="50" style="max-width:800px;" />
+            </div><br />
+
+            <div>
+                <h5> <label>Blog Content</label></h5>
+                <textarea name="content" id="content" class="form-control" ng-model="bc.item.content" rows="6" style="max-width:800px"></textarea>
+            </div><br />
+
+            <div>
+                <h5><label>Blog Image</label></h5>
+                <input type="text" name="image" class="form-control" ng-model="bc.item.image" style="max-width:800px" />
+            </div>
+
+            <br />
+            <button type="submit" class="btn btn-primary" ng-click="bc.onSubmit(bc.item)">Submit</button><br />
+        </form>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+
+
+@section scripts {
+    <script>
+        //CKeditor
+        CKEDITOR.replace('content',
+            {
+                customConfig: 'config.js'
+            });
+    </script>
+    <script>
+        (function () {
+            angular.module('myApp', ['ngMaterial']).factory('blogService', BlogService);
+
+            BlogService.$inject = ['$http'];
+
+            function BlogService($http) {
+
+                return {
+                    createBlogs: _createBlogs
+                }
+
+                function _createBlogs(item) {
+                    item.content = CKEDITOR.instances.content.getData();
+                    return $http.post('/api/blogs', item)
+                        .then(onCreateSuccess)
+                        .catch(onError);
+                }
+
+                function onCreateSuccess(response) {
+                    return response.data;
+                }
+
+                function onError() {
+                    console.log("Error!");
+                }
+            }
+        })();
+
+    </script>
+    <script>
+        (function () {
+            "use strict"
+            angular.module('myApp').controller('blogController', BlogController);
+
+            BlogController.$inject = ['$scope', 'blogService'];
+
+            function BlogController($scope, blogService) {
+                var vm = this;
+                vm.item = null;
+                vm.$scope = $scope;
+
+                vm.onSubmit = _onSubmit;
+                vm.blogService = blogService;
+
+                function _onSubmit(item) {
+                    vm.item = item
+                    vm.blogService.createBlogs(vm.item);
+                    location.href = '/home';
+                }
+
+
+            }
+
+
+
+        })();
+
+
+    </script>
+
+
+
+}
+
+

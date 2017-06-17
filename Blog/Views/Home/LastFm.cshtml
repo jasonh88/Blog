@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewBag.Title = "LastFm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script>
+        (function () {
+            angular.module('myApp', ['ngMaterial']).factory('mainService', MainService);
+
+            MainService.$inject = ['$http'];
+
+            function MainService($http) {
+
+                return {
+                    getBlogs: _getBlogs
+                }
+
+                //Blogs
+                function _getBlogs() {
+                    return $http.get('http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=jasonhoang88&api_key=f2deed72c74bd26a3b0a003d103889cd&format=json')
+                        .then(onSuccessGetBlogs)
+                        .catch(onError);
+                }
+
+                function onSuccessGetBlogs(response) {
+                    console.log('Successfully received data from GetBlogs');
+                    return response.data;
+                }
+
+                function onError() {
+                    console.log("Error!");
+                }
+            }
+
+
+        })();
+</script>
+
+
+<script>
+     (function () {
+         angular.module('myApp')
+             .controller('mainController', MainController);
+
+         MainController.$inject = ['$scope', 'mainService'];
+
+
+         function MainController($scope, mainService) {
+             var vm = this;
+             vm.$scope = $scope;
+
+             //SCROLL TO SECTION OF THE RESPECTIVE BUTTON
+             vm.goTo = _goTo;
+
+             //Blog service and functions
+             vm.mainService = mainService;
+             vm.blogs = null;
+             vm.selectedBlog = null;
+             vm.getBlogs = _getBlogs;
+             vm.blogSelect = _blogSelect;
+             vm.createBlog = _createBlog;
+             vm.blogCounter = 0;
+
+             //LastFm
+             //vm.lastFm = null;
+             //vm.getLastFm = _getLastFm;
+
+
+             render();
+
+             function render() {
+                 return vm.getBlogs()
+                     .then(onCompleteGetBlogs);
+             }
+
+             ////LAST FM SECTION
+             //function _getLastFm() {
+             //    return $http.get('http://ws.audioscrobbler.com/2.0/?method=user.gettopartists&user=jasonhoang88&api_key=f2deed72c74bd26a3b0a003d103889cd&format=json')
+             //        .then(onSuccessGetLastFm)
+             //        .catch(onError);
+             //}
+
+             //function onSuccessGetLastFm(response) {
+             //    vm.lastFm = response.data;
+             //}
+
+             //function onError() {
+             //    console.log("Error!");
+             //}
+             ////END LASTFM SECTION
+
+             //BLOG SECTION
+             function _getBlogs() {
+                 return mainService.getBlogs()
+                     .then(fillBlogItems)
+             }
+
+             function fillBlogItems(data) {
+                 console.log("Filling Blog items");
+                 vm.blogs = data;
+                 console.log(vm.blogs)
+             }
+
+             function onCompleteGetBlogs() {
+                 console.log("Completed render and filling blog items");
+             }
+
+             function _blogSelect(item) {
+                 vm.selectedBlog = item;
+                 console.log(vm.selectedBlog);
+             }
+
+             function _createBlog() {
+                 vm.blogCounter = vm.blogCounter + 1;
+
+                 if (vm.blogCounter == 3) {
+                     location.href = "/blogs";
+                 } else { }
+
+
+                 //switch (vm.blogCounter) {
+                 //    case 1:
+                 //    case 2:
+                 //    case 3:
+                 //}
+
+             }
+             //END BLOG SECTION
+
+             //SCROLL TO SECTION OF THE RESPECTIVE BUTTON
+             function _goTo(section) {
+                 $('html, body').animate({
+                     scrollTop: $('#' + section).offset().top
+                 }, 1000);
+             };
+
+
+         }
+
+
+
+     })();
+</script>
