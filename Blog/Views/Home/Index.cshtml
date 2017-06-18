@@ -44,7 +44,7 @@
                         <a ng-click="mc.goTo('music')">Music</a>
                     </li>
                     <li>
-                        <a ng-click="mc.goTo('blah')">Blah</a>
+                        <a ng-click="mc.goTo('fitbit')">Fitbit</a>
                     </li>
                     <li>
                         <a ng-click="mc.goTo('blah')">Blah</a>
@@ -88,7 +88,7 @@
 
                 <div class="col-md-8 container">
                     <div>
-                        <h3 class="text-center">{{mc.selectedBlog.content? mc.selectedBlog.title : 'Select a bloggerino!'}}</h3>
+                        <h2 class="text-center">{{mc.selectedBlog.content? mc.selectedBlog.title : 'Select a blog!'}}</h2>
                         <h5 ng-bind-html="mc.selectedBlog.content" class="scrollerino"></h5>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
 
-                    <h3>MUSIC</h3>
+                    <h2>MUSIC</h2>
                     <div id="charts">
                         <fusioncharts width="700"
                                       height="500"
@@ -136,11 +136,11 @@
     </section>
     <!-- END MUSIC SECTION-->
 
-    <section id="blankfornow" class="content-section text-center">
+    <section id="fitbit" class="content-section text-center">
         <div class="download-section">
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
-
+                    <h2>FITBIT</h2>
               
                 </div>
             </div>
@@ -287,7 +287,7 @@
                             "paletteColors": "#0075c2,#1aaf5d,#f2c500,#f45b00,#8e0000",
 
                             "caption": "Top Artists",
-                            "subCaption": "",
+                            "subCaption": "By Play Count",
                             "numberPrefix": "Play count: ",
                             "valueFontSize": "14",
                             //Changing alpha of value font
