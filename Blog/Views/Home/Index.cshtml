@@ -2,6 +2,7 @@
     a {
         cursor: pointer;
     }
+
     .scrollerino {
         height: 350px;
         overflow-y: auto;
@@ -17,8 +18,6 @@
             -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
             background-color: #42DCA3;
         }
-    
-
 </style>
 <div id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" style="background-color:black" ng-controller="mainController as mc">
     <!-- Navigation -->
@@ -47,7 +46,7 @@
                         <a ng-click="mc.goTo('fitbit')">Fitbit</a>
                     </li>
                     <li>
-                        <a ng-click="mc.goTo('blah')">Blah</a>
+                        <a ng-click="mc.goTo('progress')">Progress</a>
                     </li>
                     <li>
                         <a ng-click="mc.goTo('contact')">Contact</a>
@@ -80,7 +79,7 @@
             </div>
         </div>
     </header>
-    
+
     <!-- BLOG Section -->
     <section id="blog" class="container content-section">
         <div>
@@ -89,19 +88,19 @@
                 <div class="col-md-8 container">
                     <div>
                         <h2 class="text-center">{{mc.selectedBlog.content? mc.selectedBlog.title : 'Select a blog!'}}</h2>
-                        <h5 ng-bind-html="mc.selectedBlog.content" class="scrollerino"></h5>
+                        <h6 ng-bind-html="mc.selectedBlog.content" class="scrollerino"></h6>
                     </div>
                 </div>
                 <div class="col-md-4 container">
                     <h2 class="text-center">BLOGS</h2>
                     <hr />
                     <div ng-repeat="blog in mc.blogs" align="right">
-                        <h5><a ng-click="mc.blogSelect(blog)">{{blog.title}}</a></h5>
+                        <h4><a ng-click="mc.blogSelect(blog)">{{blog.title}}</a></h4>
                     </div>
                 </div>
             </div>
             <br />
-          
+
         </div>
         <div class="text-center">
             <a ng-click="mc.goTo('music')" class="btn btn-circle">
@@ -113,36 +112,65 @@
     <!-- MUSIC -->
 
     <section id="music" class="content-section text-center">
-      
-            <div class="container">
-                <div class="col-lg-8 col-lg-offset-2">
 
-                    <h2>MUSIC</h2>
-                    <div id="charts">
-                        <fusioncharts width="700"
-                                      height="500"
-                                      type="pie2d"
+        <div class="container-fluid">
+            <div class="col-lg-12">
+
+                <h2>MUSIC</h2>
+                <div id="charts" class="row">
+                    <div class="col-md-6">
+                        <fusioncharts width="700px"
+                                      height="400px"
+                                      type="pie3d"
                                       datasource="{{mc.myDataSource}}">
                         </fusioncharts>
                     </div>
+
+                    <div class="col-md-6">
+                        <fusioncharts width="700px"
+                                      height="400px"
+                                      type="doughnut3d"
+                                      datasource="{{mc.topTracks}}">
+                        </fusioncharts>
+                    </div>
                 </div>
+            </div>
         </div>
         <div class="text-center">
-            <a ng-click="mc.goTo('contact')" class="btn btn-circle">
+            <a ng-click="mc.goTo('fitbit')" class="btn btn-circle">
                 <i class="fa fa-angle-double-down animated"></i>
             </a>
             <br /><br /><br /><br />
         </div>
     </section>
     <!-- END MUSIC SECTION-->
-
+    <!-- FITBIT SECTION-->
     <section id="fitbit" class="content-section text-center">
         <div class="download-section">
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
                     <h2>FITBIT</h2>
-              
+
                 </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <a ng-click="mc.goTo('progress')" class="btn btn-circle">
+                <i class="fa fa-angle-double-down animated"></i>
+            </a>
+            <br /><br /><br /><br />
+        </div>
+    </section>
+    <!-- END FITBIT SECTION-->
+    <!-- PROGRESS SECTION-->
+
+    <section id="progress" class="content-section text-center">
+
+        <div class="container">
+            <div class="col-lg-8 col-lg-offset-2">
+
+                <h2>PROGRESS</h2>
+                <div></div>
             </div>
         </div>
         <div class="text-center">
@@ -152,9 +180,7 @@
             <br /><br /><br /><br />
         </div>
     </section>
-
-
-
+    <!-- END PROGRESS SECTION -->
     <!-- Contact Section -->
     <section id="contact" class="content-section text-center">
         <div class="row">
@@ -190,6 +216,12 @@
 
                     </md-content>
                     <br /><br /><br /><br /><br /><br /><br />
+                    <div class="text-center">
+                        <a ng-click="mc.goTo('about')" class="btn btn-circle">
+                            <i class="fa fa-angle-double-up animated"></i>
+                        </a>
+                        <br /><br /><br /><br />
+                    </div>
                 </div>
             </div>
         </div>
@@ -210,7 +242,8 @@
 
                 return {
                     getBlogs: _getBlogs,
-                    getMusic: _getMusic
+                    getMusic: _getMusic,
+                    getTopTracks: _getTopTracks
                 }
 
                 //GET BLOGS SECTION
@@ -238,6 +271,17 @@
                     //console.log("GOT THE MUZIX");
                     return artists.data;
                 }
+
+                function _getTopTracks() {
+                    return $http.get('http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=jasonhoang88&limit=5&api_key=' + '@System.Configuration.ConfigurationManager.AppSettings["lastFm"]' +'&format=json')
+                        .then(onSuccessGetTopTracks)
+                }
+
+                function onSuccessGetTopTracks(tracks) {
+                    //console.log("GOT THE MUZIX");
+                    return tracks.data;
+                }
+
                 //END MUSIC SECTION
 
 
@@ -252,7 +296,6 @@
         })();
     </script>
     <!-- FACTORY END-->
-  
     <!-- CONTROLLER BEGIN-->
     <script>
         (function () {
@@ -271,6 +314,91 @@
 
 
                 //MUSIC
+                vm.topTracks = {
+                    chart: {
+                        "paletteColors": "#99ccff,#66ff99,#ffff99,#ff6699,#cc99ff",
+
+                        "caption": "Top Tracks",
+                        "subCaption": "By Play Count",
+                        "numberPrefix": "Play count: ",
+                        "valueFontSize": "14",
+                        //Changing alpha of value font
+                        "valueFontAlpha": "60",
+                        "baseFontColor": "#FFFFFF",
+                        "baseFont": "Montserrat",
+                        //Changing alpha of value background
+                        "bgColor": "#000000",
+                        "bgAlpha": "100",
+                        "showBorder": "0",
+                        "showplotborder": "0",
+                        "showPercentValues": "0",
+                        "showPercentInToolTip": "1",
+                        "toolTipBgColor": "#000000",
+                        "showCanvasBase": "1",
+                        "canvasBaseDepth": "14",
+                        "canvasBgDepth": "5",
+                        "canvasBaseColor": "#000000",
+                        "canvasBgColor": "#000000",
+                        "use3DLighting": "0",
+                        "showShadow": "0",
+                        "legendBgColor": "#000000",
+                        "legendBorderAlpha": "0",
+                        "legendShadow": "0",
+                        "legendItemFontSize": "10",
+                        "legendItemFontColor": "#ffffff",
+                        "useDataPlotColorForLabels": "1",
+                        "showLegend": "1",
+                        "formatNumber": "1",
+                        "thousandSeparatorPosition": "2,3",
+                        "formatNumberScale": "0",
+                        "showHoverEffect": "1",
+                        "startingAngle": "90"
+                    },
+                    data: []
+                };
+
+                vm.myDataSource = {
+                    chart: {
+                        "paletteColors": "#0075c2,#1aaf5d,#f2c500,#ff0000,#a300cc",
+
+                        "caption": "Top Artists",
+                        "subCaption": "By Play Count",
+                        "numberPrefix": "Play count: ",
+                        "valueFontSize": "14",
+                        //Changing alpha of value font
+                        "valueFontAlpha": "60",
+                        "baseFontColor": "#FFFFFF",
+                        "baseFont": "Montserrat",
+                        //Changing alpha of value background
+                        "bgColor": "#000000",
+                        "bgAlpha": "100",
+                        "showBorder": "0",
+                        "showplotborder": "0",
+                        "showPercentValues": "1",
+                        "showPercentInToolTip": "0",
+                        "toolTipBgColor": "#000000",
+                        "showCanvasBase": "1",
+                        "canvasBaseDepth": "14",
+                        "canvasBgDepth": "5",
+                        "canvasBaseColor": "#000000",
+                        "canvasBgColor": "#000000",
+                        "use3DLighting": "0",
+                        "showShadow": "0",
+                        "legendBgColor": "#000000",
+                        "legendBorderAlpha": "0",
+                        "legendShadow": "0",
+                        "legendItemFontSize": "10",
+                        "legendItemFontColor": "#ffffff",
+                        "useDataPlotColorForLabels": "1",
+                        "showLegend": "1",
+                        "formatNumber": "1",
+                        "thousandSeparatorPosition": "2,3",
+                        "formatNumberScale": "0",
+                        "showHoverEffect": "1",
+                        "startingAngle": "90"
+                    },
+                    data: []
+                };
 
                 //Blog service and functions
                 vm.mainService = mainService;
@@ -281,83 +409,52 @@
                 vm.createBlog = _createBlog;
                 vm.blogCounter = 0;
 
-   
-                vm.myDataSource = {
-                        chart: {
-                            "paletteColors": "#0075c2,#1aaf5d,#f2c500,#f45b00,#8e0000",
-
-                            "caption": "Top Artists",
-                            "subCaption": "By Play Count",
-                            "numberPrefix": "Play count: ",
-                            "valueFontSize": "14",
-                            //Changing alpha of value font
-                            "valueFontAlpha": "60",
-                            "baseFontColor": "#FFFFFF",
-                            "baseFont": "Montserrat",
-                            //Changing alpha of value background
-                            "bgColor": "#000000",
-                            "bgAlpha": "100",
-                            "showBorder": "0",
-                            "showplotborder": "0",
-                            "showPercentValues": "1",
-                            "showPercentInToolTip": "0",
-                            "toolTipBgColor": "#000000",
-                            "showCanvasBase": "1",
-                            "canvasBaseDepth": "14",
-                            "canvasBgDepth": "5",
-                            "canvasBaseColor": "#000000",
-                            "canvasBgColor": "#000000",
-                            "use3DLighting": "0",
-                            "showShadow": "0",
-                            "legendBgColor": "#000000",
-                            "legendBorderAlpha": "0",
-                            "legendShadow": "0",
-                            "legendItemFontSize": "10",
-                            "legendItemFontColor": "#ffffff",
-                            "useDataPlotColorForLabels": "1",
-                            "showLegend": "1",
-                            "formatNumber": "1",
-                            "thousandSeparatorPosition": "2,3",
-                            "formatNumberScale": "0"
-                        },
-                       data: [
-                         
-                        ]
-                    
-                };
-
                 render();
 
                 function render() {
-                         vm.getBlogs()
+                    vm.getBlogs()
                         .then(onCompleteGetBlogs);
 
-                         mainService.getMusic()
-                             .then(fillTopArtists);
+                    mainService.getMusic()
+                        .then(fillTopArtists);
+
+                    mainService.getTopTracks()
+                        .then(fillTopTracks);
                 }
 
 
-                //MUSIC SECTION 
-                    function _getMusic() {
-                        return mainService.getMusic()
-                            .then(fillTopArtists);
-                    }
+                //MUSIC SECTION
+                function _getMusic() {
+                    return mainService.getMusic()
+                        .then(fillTopArtists);
+                }
 
-                    function fillTopArtists(data) {
-                        console.log("data", data)
-                        //console.log("ARTISTS GET");
-                        var artistData = data.topartists.artist;
-                        for (var i = 0; i < artistData.length; i++) {
-                            var newItem = {
-                                label: artistData[i].name,
-                                value: artistData[i].playcount
-                            }
-
-                            vm.myDataSource.data.push(newItem);
-                     
+                function fillTopArtists(data) {
+                    console.log("data", data)
+                    //console.log("ARTISTS GET");
+                    var artistData = data.topartists.artist;
+                    for (var i = 0; i < artistData.length; i++) {
+                        var newItem = {
+                            label: artistData[i].name,
+                            value: artistData[i].playcount
                         }
-                        console.log(vm.myDataSource.data);
+
+                        vm.myDataSource.data.push(newItem);
+
                     }
+                    console.log(vm.myDataSource.data);
+                }
+
+                function fillTopTracks(data) {
+                    var myTopTracks = data.toptracks.track;
+                    for (var i = 0; i < myTopTracks.length; i++) {
+                        var newItem = {
+                            label: myTopTracks[i].name,
+                            value: myTopTracks[i].playcount
+                        }
+                        vm.topTracks.data.push(newItem);
+                    }
+                }
                 //END MUSIC SECTION
 
                 //BLOG SECTION
@@ -373,7 +470,7 @@
 
                 function onCompleteGetBlogs() {
                     console.log("Completed render and filling blog items");
-                
+
                 }
 
                 function _blogSelect(item) {

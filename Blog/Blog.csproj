@@ -650,6 +650,7 @@
     <Content Include="Content\Images\free-stock-images-6.jpg" />
     <Content Include="Content\Images\intro-bg.jpg" />
     <Content Include="Content\Images\map-marker.png" />
+    <Content Include="Content\Images\Screenshot_20170618-162720.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fusioncharts-suite-xt\angularjs-plugin\wrappers\angularjs\angular-fusioncharts.min.js" />
