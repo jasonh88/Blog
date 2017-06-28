@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<div ng-controller="cacheController as cc">
+
+
+
+    <input ng-model="cc.newCacheKey" placeholder="Key" style="color:black">
+    <input ng-model="cc.newCacheValue" placeholder="Value" style="color:black">
+    <button ng-click="cc.put(cc.newCacheKey, cc.newCacheValue)">Cache</button>
+
+    <p ng-if="cc.keys.length">Cached Values</p>
+    <div ng-repeat="key in cc.keys">
+        <span ng-bind="key"></span>
+        <span>: </span>
+        <b ng-bind="cc.cache.get(key)"></b>
+    </div>
+
+    <p>Cache Info</p>
+    <div ng-repeat="(key, value) in cc.cache.info()">
+        <span ng-bind="key"></span>
+        <span>: </span>
+        <b ng-bind="value"></b>
+
+    </div>
+    <button ng-click="cc.displayCache()">GET CACHE</button>
+
+
+    <div ng-model="cc.getProfile">
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+    (function () {
+        "use strict";
+        angular.module("myApp", ['angular-cache'])
+            .service("cacheService", CacheService);
+
+        CacheService.$inject = ['CacheFactory'];
+
+
+        function CacheService(CacheFactory) {
+
+            //if (!CacheFactory.get(myAwesomeCache)) {
+            //    myAwesomeCache = CacheFactory(myAwesomeCache);
+            //}
+
+            var myAwesomeCache = CacheFactory('myAwesomeCache', {
+                maxAge: 15 * 60 * 1000,
+                cacheFlushInterval: 60 * 60 *1000,
+                deleteOnExpire: 'aggressive',
+                storageMode: 'localStorage'
+            })
+
+            myAwesomeCache.put(\' +cacherino\', {
+                name: 'JERBPLS',
+                skills: ['programming', 'piano']
+            });
+
+
+          
+            var cache = myAwesomeCache.get('asdsdf')
+            if (!cache) {
+                console.log("no cache")
+            } else {
+                console.log(cache);
+            }
+            //get('myAwesomeCache');
+            //localStorage.setItem('CACHERINO', JSON.stringify(myData));
+            //var cache = localStorage.getItem('myAwesomeCache');
+
+            }
+
+        }
+
+    )();
+
+
+    (function () {
+        "use strict";
+
+        angular.module("myApp").controller("cacheController", CacheController);
+
+
+        CacheController.$inject = ['$scope', 'cacheService', 'CacheFactory'];
+
+        function CacheController($scope, cacheService, CacheFactory) {
+
+            var vm = this;
+            vm.$scope = $scope;
+            vm.cacheService = cacheService;
+            vm.myCache = null;
+
+            vm.cacheMe = _cacheMe;
+
+            render()
+
+            function render() {
+                _cacheMe();
+            }
+            function _cacheMe() {
+                vm.myCache = cacheService.myAwesomeCache;
+                //console.log(vm.myCache)
+            }
+
+
+
+
+        }
+
+
+    })();
+
+
+    </script>
+
+}

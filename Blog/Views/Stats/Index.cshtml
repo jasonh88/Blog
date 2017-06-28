@@ -1,4 +1,10 @@
-﻿<style>
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
     a {
         cursor: pointer;
     }
@@ -18,8 +24,10 @@
             -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
             background-color: #42DCA3;
         }
+
+
 </style>
-<div id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" style="background-color:black" ng-controller="mainController as mc">
+<div id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" style="background-color:black" ng-controller="statsController as sc">
     <!-- Navigation -->
     <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
         <div class="container">
@@ -33,23 +41,15 @@
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
+                        <a ng-click="sc.returnHome()">Jason Hoang</a>
                     <li>
-                        <a ng-click="mc.goTo('about')">About</a>
+                        <a ng-click="sc.goTo('fitbit')">Fitbit</a>
                     </li>
                     <li>
-                        <a ng-click="mc.goTo('blog')">Blog</a>
+                        <a ng-click="sc.goTo('music')">Music</a>
                     </li>
                     <li>
-                        <a ng-click="mc.goTo('music')">Music</a>
-                    </li>
-                    <li>
-                        <a ng-click="mc.goTo('fitbit')">Fitbit</a>
-                    </li>
-                    <li>
-                        <a ng-click="mc.goTo('progress')">Progress</a>
-                    </li>
-                    <li>
-                        <a ng-click="mc.goTo('contact')">Contact</a>
+                        <a ng-click="sc.goTo('projects')">Other Projects</a>
                     </li>
                 </ul>
             </div>
@@ -58,18 +58,17 @@
         <!-- /.container -->
     </nav>
     <!-- Intro Header -->
-    <header class="intro" id="about">
+    <header class="intro" id="projects">
         <div class="intro-body">
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
                         <br /><br /><br /><br /><br />
-                        <h1 class="brand-heading"><span ng-click="mc.createBlog()">J</span>ASON</h1> <hr><h1 class="brand-heading">HOANG</h1>
+                        <h1 class="brand-heading">Projects</h1>
                         <p class="intro-text">
-          
                         </p>
 
-                        <a ng-click="mc.goTo('blog')" class="btn btn-circle">
+                        <a ng-click="sc.goTo('blog')" class="btn btn-circle">
                             <i class="fa fa-angle-double-down animated"></i>
                         </a>
                         <br /><br /><br /><br /><br /><br /><br />
@@ -79,37 +78,26 @@
         </div>
     </header>
 
-    <!-- BLOG Section -->
-    <section id="blog" class="container content-section">
-        <div>
-            <div class="row">
+    <!-- FITBIT SECTION-->
+    <section id="fitbit" class="content-section text-center">
+        <div class="download-section">
+            <div class="container">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <h2>FITBIT</h2>
 
-                <div class="col-md-8 container">
-                    <div>
-                        <h2 class="text-center">{{mc.selectedBlog.content? mc.selectedBlog.title : 'Select a blog!'}}</h2>
-                        <h6 ng-bind-html="mc.selectedBlog.content" class="scrollerino" id="topContent"></h6>
-                    </div>
-                </div>
-                <div class="col-md-4 container">
-                    <h2 class="text-center">BLOGS</h2>
-                    <hr />
-                    <div ng-repeat="blog in mc.blogs" align="right">
-                        <h4><a ng-click="mc.blogSelect(blog)">{{blog.title}}</a></h4>
-                    </div>
                 </div>
             </div>
-            <br />
-
         </div>
         <div class="text-center">
-            <a ng-click="mc.goTo('music')" class="btn btn-circle">
+            <a ng-click="sc.goTo('progress')" class="btn btn-circle">
                 <i class="fa fa-angle-double-down animated"></i>
             </a>
+            <br /><br /><br /><br />
         </div>
     </section>
+    <!-- END FITBIT SECTION-->
 
     <!-- MUSIC -->
-
     <section id="music" class="content-section text-center">
 
         <div class="container-fluid">
@@ -122,7 +110,7 @@
                         <fusioncharts width="700px"
                                       height="400px"
                                       type="pie3d"
-                                      datasource="{{mc.myDataSource}}">
+                                      datasource="{{sc.myDataSource}}">
                         </fusioncharts>
                     </div>
 
@@ -130,134 +118,38 @@
                         <fusioncharts width="700px"
                                       height="400px"
                                       type="doughnut3d"
-                                      datasource="{{mc.topTracks}}">
+                                      datasource="{{sc.topTracks}}">
                         </fusioncharts>
                     </div>
                 </div>
             </div>
         </div>
         <div class="text-center">
-            <a ng-click="mc.goTo('fitbit')" class="btn btn-circle">
+            <a ng-click="sc.goTo('fitbit')" class="btn btn-circle">
                 <i class="fa fa-angle-double-down animated"></i>
             </a>
             <br /><br /><br /><br />
         </div>
     </section>
     <!-- END MUSIC SECTION-->
-    <!-- FITBIT SECTION-->
-    <section id="fitbit" class="content-section text-center">
-        <div class="download-section">
-            <div class="container">
-                <div class="col-lg-8 col-lg-offset-2">
-                    <h2>FITBIT</h2>
 
-                </div>
-            </div>
-        </div>
-        <div class="text-center">
-            <a ng-click="mc.goTo('progress')" class="btn btn-circle">
-                <i class="fa fa-angle-double-down animated"></i>
-            </a>
-            <br /><br /><br /><br />
-        </div>
-    </section>
-    <!-- END FITBIT SECTION-->
-    <!-- PROGRESS SECTION-->
 
-    <section id="progress" class="content-section text-center">
-
-        <div class="container">
-            <div class="col-lg-8 col-lg-offset-2">
-
-                <h2>PROGRESS</h2>
-                <div></div>
-            </div>
-        </div>
-        <div class="text-center">
-            <a ng-click="mc.goTo('contact')" class="btn btn-circle">
-                <i class="fa fa-angle-double-down animated"></i>
-            </a>
-            <br /><br /><br /><br />
-        </div>
-    </section>
-    <!-- END PROGRESS SECTION -->
-    <!-- Contact Section -->
-    <section id="contact" class="content-section text-center">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2">
-                <h2>Contact</h2>
-
-                <div align="center">
-                    <md-content style="background-color:black">
-
-                        <md-button class="md-fab md-primary" style="background-color:#3bb7e8" ng-href="https://www.linkedin.com/in/jason-hoang-146961139/" aria-label="linkedIn">
-                            <md-icon align="center" style="font-size:1.5em;" class="fa fa-linkedin"></md-icon>
-                        </md-button>
-
-                        @*<md-button class="md-fab md-primary" ng-href="" style="background-color:darkblue" aria-label="facebook">
-                            <md-icon align="center" style="font-size:1.5em;" class="fa fa-facebook"></md-icon>
-                        </md-button>
-
-                        <md-button class="md-fab md-primary" ng-href="" style="background-color:#641d93" aria-label="instagram">
-                            <md-icon align="center" style="font-size:1.5em;" class="fa fa-instagram"></md-icon>
-                        </md-button>*@
-
-                        @*<md-button class="md-fab md-primary" ng-href="" style="background-color:#ffe928" aria-label="ghost">
-                            <md-icon align="center" style="font-size:1.5em;" class="fa fa-snapchat-ghost"></md-icon>
-                        </md-button>*@
-
-                        @*<md-button class="md-fab md-primary" ng-href="" style="background-color:#00bae0" aria-label="twitter">
-                            <md-icon align="center" style="font-size:1.5em;" class="fa fa-twitter"></md-icon>
-                        </md-button>*@
-
-                        <md-button class="md-fab md-primary" ng-href="" style="background-color:#e00000" aria-label="google">
-                            <md-icon align="center" style="font-size:1.5em;" class="fa fa-google"></md-icon>
-                        </md-button>
-
-                    </md-content>
-                    <br /><br /><br /><br /><br /><br /><br />
-                    <div class="text-center">
-                        <a ng-click="mc.goTo('about')" class="btn btn-circle">
-                            <i class="fa fa-angle-double-up animated"></i>
-                        </a>
-                        <br /><br /><br /><br />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 </div>
 
-<!-- Theme JavaScript -->
 
-@section scripts {
-    <!-- FACTORY BEGIN-->
+@section scripts{
     <script>
         (function () {
-            angular.module('myApp', ['ngMaterial', 'ngSanitize', 'ng-fusioncharts', 'ngAnimate']).factory('mainService', MainService);
+            angular.module('myApp', ['ngMaterial', 'ngSanitize', 'ng-fusioncharts', 'ngAnimate']).factory('statsService', StatsService);
 
-            MainService.$inject = ['$http'];
+            StatsService.$inject = ['$http'];
 
-            function MainService($http) {
+            function StatsService($http) {
 
                 return {
-                    getBlogs: _getBlogs,
                     getMusic: _getMusic,
                     getTopTracks: _getTopTracks
                 }
-
-                //GET BLOGS SECTION
-                function _getBlogs() {
-                    return $http.get('/api/blogs')
-                        .then(onSuccessGetBlogs)
-                        .catch(onError);
-                }
-
-                function onSuccessGetBlogs(response) {
-                    //console.log('Successfully received data from GetBlogs');
-                    return response.data;
-                }
-                //END GET BLOGS
 
                 //GET MUSIC SECTION
 
@@ -288,11 +180,7 @@
                 function onError() {
                     console.log("Error!");
                 }
-
-
             }
-
-
         })();
     </script>
     <!-- FACTORY END-->
@@ -300,18 +188,18 @@
     <script>
         (function () {
             angular.module('myApp')
-                .controller('mainController', MainController);
+                .controller('statsController', StatsController);
 
-            MainController.$inject = ['$scope', 'mainService'];
+            StatsController.$inject = ['$scope', 'statsService'];
 
 
-            function MainController($scope, mainService) {
+            function StatsController($scope, statsService) {
                 var vm = this;
                 vm.$scope = $scope;
-
+                vm.statsService = statsService;
                 //SCROLL TO SECTION OF THE RESPECTIVE BUTTON
                 vm.goTo = _goTo;
-
+                vm.returnHome = _returnHome;
 
                 //MUSIC
                 vm.topTracks = {
@@ -400,25 +288,14 @@
                     data: []
                 };
 
-                //Blog service and functions
-                vm.mainService = mainService;
-                vm.blogs = null;
-                vm.selectedBlog = null;
-                vm.getBlogs = _getBlogs;
-                vm.blogSelect = _blogSelect;
-                vm.createBlog = _createBlog;
-                vm.blogCounter = 0;
-
                 render();
 
                 function render() {
-                    vm.getBlogs()
-                        .then(onCompleteGetBlogs);
 
-                    mainService.getMusic()
+                    statsService.getMusic()
                         .then(fillTopArtists);
 
-                    mainService.getTopTracks()
+                    statsService.getTopTracks()
                         .then(fillTopTracks);
                 }
 
@@ -457,52 +334,18 @@
                 }
                 //END MUSIC SECTION
 
-                //BLOG SECTION
-                function _getBlogs() {
-                    return mainService.getBlogs()
-                        .then(fillBlogItems)
-                }
-
-                function fillBlogItems(data) {
-                    //console.log("Filling Blog items");
-                    vm.blogs = data;
-                }
-
-                function onCompleteGetBlogs() {
-                    console.log("Completed render and filling blog items");
-
-                }
-
-                function _blogSelect(item) {
-                    vm.selectedBlog = item;
-                    console.log(vm.selectedBlog);
-                    //Makes the scrollbar start at the top when switching between blogs
-                    document.getElementById('topContent').scrollTop = 0;
-                }
-
-                function _createBlog() {
-                    vm.blogCounter = vm.blogCounter + 1;
-
-                    if (vm.blogCounter == 3) {
-                        location.href = "/blogs";
-                    } else { }
-
-                    //switch (vm.blogCounter) {
-                    //    case 1:
-                    //    case 2:
-                    //    case 3:
-                    //}
-
-                }
-                //END BLOG SECTION
-
                 //SCROLL TO SECTION OF THE RESPECTIVE BUTTON
                 function _goTo(section) {
                     $('html, body').animate({
                         scrollTop: $('#' + section).offset().top
                     }, 1000);
                 };
+
+                function _returnHome() {
+                    location.href = '/home/index';
+                }
             }
         })();
     </script>
 }
+

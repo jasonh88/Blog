@@ -201,10 +201,13 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\BlogsApiController.cs" />
+    <Compile Include="Controllers\Api\CacheController.cs" />
     <Compile Include="Controllers\Api\ProgressApiController.cs" />
     <Compile Include="Controllers\BlogsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProgressController.cs" />
+    <Compile Include="Controllers\StatsController.cs" />
     <Compile Include="fusioncharts-suite-xt\export-handlers\asp-export-handler\FCExporter.aspx.cs">
       <DependentUpon>FCExporter.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -826,6 +829,7 @@
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-aria.js" />
     <Content Include="Scripts\angular-aria.min.js" />
+    <Content Include="Scripts\angular-cache.js" />
     <Content Include="Scripts\angular-material-mocks.js" />
     <Content Include="Scripts\angular-material.js" />
     <Content Include="Scripts\angular-material.min.js" />
@@ -953,6 +957,9 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Blogs\Index.cshtml" />
+    <Content Include="Views\Progress\ProgressIndex.cshtml" />
+    <Content Include="Views\Cache\Index.cshtml" />
+    <Content Include="Views\Stats\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

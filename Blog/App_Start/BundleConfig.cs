@@ -20,8 +20,8 @@ namespace Blog
                         "~/Scripts/angular.js",
                     "~/Scripts/angular-animate.js",
                     "~/Scripts/angular-aria.js",
-                    "~/Scripts/angular-material.js"));
-
+                    "~/Scripts/angular-material.js",
+                    "~/Scripts/angular-cache.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
